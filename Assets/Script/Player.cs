@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public float health;
     public int maxHealth;
     public int exp;
+    public int killCount;
 
 
     public Vector2 inputVec;

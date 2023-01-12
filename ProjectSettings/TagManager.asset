@@ -8,6 +8,7 @@ TagManager:
   - Area
   - Enemy
   - Item
+  - Weapon
   layers:
   - Default
   - TransparentFX

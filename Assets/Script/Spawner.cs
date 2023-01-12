@@ -10,6 +10,9 @@ public class Spawner : MonoBehaviour
     int level;
     float timer;
 
+    public ObjectManager objectManager;
+    public GameObject Player;
+
     private void Awake()
     {
         spawnPoint = GetComponentsInChildren<Transform>();
@@ -30,6 +33,9 @@ public class Spawner : MonoBehaviour
     {
        GameObject enemy = GameManager.instance.pool.Get(0);
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+        Enemy enemyLogic = enemy.GetComponent<Enemy>();
+        enemyLogic.objectManager = objectManager;
+        enemyLogic.player = Player;
         enemy.GetComponent<Enemy>().Init(spawnData[level]);
     }
 }

@@ -7,15 +7,19 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float health;
     public float maxHealth;
+    public GameObject player;
     public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
 
     bool isLive;
 
+    bool isInv;
+
     Animator anim;
     Rigidbody2D rigid;
     SpriteRenderer spriter;
 
+    public ObjectManager objectManager;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -45,6 +49,54 @@ public class Enemy : MonoBehaviour
         isLive = true;
         health = maxHealth;
 
+    }
+    private void OnHit(int dmg) 
+    {
+        if (health <= 0)
+            return;
+        health -= dmg;
+        if (health <= 0)
+        {
+            Player playerLogic = player.GetComponent<Player>();
+            playerLogic.killCount += 1;
+
+            if (maxHealth == 10)
+            {
+                GameObject ExpS = objectManager.MakeObj("ExpS");
+                ExpS.transform.position = transform.position;
+                gameObject.SetActive(false);
+            }
+            if (maxHealth == 15)
+            {
+                GameObject ExpM = objectManager.MakeObj("ExpM");
+                ExpM.transform.position = transform.position;
+                gameObject.SetActive(false);
+            }
+        }
+
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (isLive)
+        {
+            if (!isInv)
+            {
+                if (collision.gameObject.tag == "Weapon")
+                {
+                    isInv = true;
+                    Invoke("InvCount", 3f);
+                    Debug.Log("¸ÂÀ½!");
+                    Weapon weapon = collision.gameObject.GetComponent<Weapon>();
+                    OnHit(weapon.dmg);
+                }
+            }
+        }
+    }
+
+    void InvCount()
+    {
+        isInv = false;
     }
     public void Init(SpawnData data)
     {
