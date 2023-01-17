@@ -115,5 +115,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: Exp
-  exp: 10
+  exp: 5
   health: 0

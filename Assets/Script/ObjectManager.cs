@@ -11,12 +11,16 @@ public class ObjectManager : MonoBehaviour
     public GameObject hpPortionPrefeb;
     public GameObject magnetPrefeb;
 
+    public GameObject bulletSPrefeb;
+
     GameObject[] expS;
     GameObject[] expM;
     GameObject[] expL;
 
     GameObject[] hpPortion;
     GameObject[] magnet;
+
+    GameObject[] bulletS;
 
     GameObject[] targetPool;
 
@@ -28,6 +32,8 @@ public class ObjectManager : MonoBehaviour
 
         hpPortion = new GameObject[10];
         magnet = new GameObject[10];
+
+        bulletS = new GameObject[50];
 
         Generate();
     }
@@ -58,6 +64,12 @@ public class ObjectManager : MonoBehaviour
             magnet[index] = Instantiate(magnetPrefeb);
             magnet[index].SetActive(false);
         }
+        for (int index = 0; index < bulletS.Length; index++)
+        {
+            bulletS[index] = Instantiate(bulletSPrefeb);
+            bulletS[index].SetActive(false);
+        }
+
     }
 
     // Pool에 복제본 리스트 넣기. 클론 생성 대신 쓰는 함수
@@ -79,6 +91,9 @@ public class ObjectManager : MonoBehaviour
                 break;
             case "Magnet":
                 targetPool = magnet;
+                break;
+            case "BulletS":
+                targetPool = bulletS;
                 break;
         }
         for (int index = 0; index < targetPool.Length; index++)
@@ -109,6 +124,9 @@ public class ObjectManager : MonoBehaviour
                 break;
             case "Magnet":
                 targetPool = magnet;
+                break;
+            case "BulletS":
+                targetPool = bulletS;
                 break;
         }
         return targetPool;

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int level;
-    public int maxLevel;
     public int speed;
     public float health;
     public int maxHealth;
@@ -17,6 +16,7 @@ public class Player : MonoBehaviour
     public Transform hp;
 
     SpriteRenderer sprite;
+    public SpriteRenderer weapon;
     Rigidbody2D rigid;
     Animator anim;
 
@@ -48,9 +48,13 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         anim.SetFloat("Speed", inputVec.magnitude);
-        if(inputVec.x != 0)
+
+        if (inputVec.x != 0)
         {
             sprite.flipX = inputVec.x < 0;
+            weapon.transform.localScale = new Vector3(1, 1, 1);
+            if (inputVec.x < 0)
+                weapon.transform.localScale = new Vector3(-1, 1, 1);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -78,17 +82,10 @@ public class Player : MonoBehaviour
 
     void CountLevel()
     {
-        for (int n = 1; n < maxLevel; n++)
+        if (exp > 5 * level)
         {
-            if (exp > 3)
-            {
-                if (exp > Mathf.Pow(3, n - 1) && exp < Mathf.Pow(3, n))
-                {
-                    level = n - 1;
-                }
-            }
-
+            level += 1;
+            exp = 0;
         }
     }
-
 }

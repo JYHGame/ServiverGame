@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
 
     }
-    private void OnHit(int dmg) 
+    private void OnDamaged(int dmg) 
     {
         if (health <= 0)
             return;
@@ -72,11 +72,38 @@ public class Enemy : MonoBehaviour
                 ExpM.transform.position = transform.position;
                 gameObject.SetActive(false);
             }
+            int ranCount = Random.Range(0, 10);
+            if (ranCount < 5)
+            {
+                Debug.Log("NotItem");
+            }
+            else if (ranCount < 8)
+            {
+                GameObject ExpL = objectManager.MakeObj("ExpL");
+                ExpL.transform.position = transform.position + Vector3.right * 0.1f;
+            }
+            else if (ranCount < 9)
+            {
+                GameObject HpPortion = objectManager.MakeObj("HpPortion");
+                HpPortion.transform.position = transform.position + Vector3.right * 0.1f;
+            }
+            else if (ranCount < 10)
+            {
+                GameObject Magnet = objectManager.MakeObj("Magnet");
+                Magnet.transform.position = transform.position + Vector3.right * 0.1f;
+            }
         }
-
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnHit(Vector2 targetPos)
+    {
+        Debug.Log("Hit!");
+        int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
+        rigid.AddForce(new Vector2(dirc, 1) * 10, ForceMode2D.Impulse);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isLive)
         {
@@ -85,11 +112,30 @@ public class Enemy : MonoBehaviour
                 if (collision.gameObject.tag == "Weapon")
                 {
                     isInv = true;
-                    Invoke("InvCount", 3f);
-                    Debug.Log("¸ÂÀ½!");
+                    Invoke("InvCount", 1f);
                     Weapon weapon = collision.gameObject.GetComponent<Weapon>();
-                    OnHit(weapon.dmg);
+                    OnDamaged(weapon.dmg);
+                    OnHit(collision.transform.position);
                 }
+            }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isLive)
+        {
+            if (collision.gameObject.tag == "Bullet")
+            {
+                if (!isInv)
+                {
+                    isInv = true;
+                    Invoke("InvCount", 1f);
+                    Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+                    OnDamaged(bullet.dmg);
+                    OnHit(collision.transform.position);
+
+                }
+                collision.gameObject.SetActive(false);
             }
         }
     }

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float gameTime;
     public float maxTime;
     public Text levelText;
+    public Text killCountText;
 
 
     public PoolManager pool;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         gameTime += Time.deltaTime;
         Player playerLogic = Player.GetComponent<Player>();
         levelText.text = "Level " + playerLogic.level;
+        killCountText.text = string.Format("{0:n0}", playerLogic.killCount);
     }
 
 }

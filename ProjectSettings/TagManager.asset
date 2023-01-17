@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Item
   - Weapon
+  - Bullet
+  - BorderBullet
   layers:
   - Default
   - TransparentFX
